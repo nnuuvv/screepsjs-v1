@@ -1,4 +1,6 @@
-﻿const roleUpgrader = {
+﻿const pathing = require("../pathing");
+const harvest = require("../actions/harvest");
+const upgrader = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
@@ -17,12 +19,9 @@
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else {
-            const target = creep.pos.findClosestByPath(FIND_SOURCES);
-            if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
+            harvest.energy(creep, pathing.getSource(creep));
         }
     }
 };
 
-module.exports = roleUpgrader;
+module.exports = upgrader;

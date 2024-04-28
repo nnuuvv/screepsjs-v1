@@ -1,12 +1,12 @@
-﻿const roleHarvester = require("./role.harvester");
-const roleUpgrader = require("./role.upgrader");
-const roleBuilder = require("./role.builder");
-const roleRepairer = require("./role.repairer");
+﻿const roleHarvester = require("roles/harvester");
+const roleUpgrader = require("roles/upgrader");
+const roleBuilder = require("roles/builder");
+const roleRepairer = require("roles/repairer");
 const creepRoles = {
-    harvester: [8, [WORK, CARRY, CARRY, MOVE, MOVE], roleHarvester],
-    upgrader: [16, [WORK, CARRY, CARRY, MOVE, MOVE], roleUpgrader],
-    builder: [12, [WORK, CARRY, CARRY, MOVE, MOVE], roleBuilder],
-    repairer: [2, [WORK, CARRY, CARRY, MOVE, MOVE], roleRepairer]
+    harvester: [4, [WORK, WORK, CARRY, MOVE], roleHarvester],
+    upgrader: [4, [WORK, WORK, CARRY, MOVE], roleUpgrader],
+    builder: [4, [WORK, WORK, CARRY, MOVE], roleBuilder],
+    repairer: [2, [WORK, WORK, CARRY, MOVE], roleRepairer]
 }
 
 module.exports = creepRoles;

@@ -1,5 +1,8 @@
-﻿const creepRoles = require('./creepRoles');
-const roadScheduler = require("roadScheduler");
+﻿const creepRoles = require('creepRoles');
+const roadScheduler = require("services/roadScheduler");
+const storageScheduler = require("services/storageScheduler");
+const wallScheduler = require("services/wallScheduler");
+const sourceHarvesting = require("services/sourceHarvesting");
 const recycle = require("recycle");
     
 module.exports.loop = function () {
@@ -9,7 +12,14 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
             console.log('Clearing non-existing creep memory:', name);
         }
-        recycle.run(Game.creeps[name]);
+        
+        /* 
+        if (Game.creeps[name].body.length < creepRoles[Game.creeps[name].memory.role][1].length) {
+            console.log(Game.creeps[name].body.length, creepRoles[Game.creeps[name].memory.role][1].length)
+            recycle.run(Game.creeps[name]);
+        }        
+         */
+            
     }
         
     let wasMissing = false;
@@ -30,20 +40,26 @@ module.exports.loop = function () {
     let first = true;
     for(let name in Game.creeps) {
         const creep = Game.creeps[name];
-
+        
         if(first){
             first = false;
-            const target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+            const target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
+                filter: function (obj) {
+                    return obj.getActiveBodyparts(ATTACK) > 0;
+                }
+            });
             if(target) {
                 console.log("Hostiles detected!!!");
                 creep.room.controller.activateSafeMode();
             }
-            
         }
         
-        creepRoles[creep.memory.role][2].run(creep);
-        
+        if (creep !== undefined)
+            creepRoles[creep.memory.role][2].run(creep);
         
     }
+    sourceHarvesting.run();
     roadScheduler.run();
+    storageScheduler.buildExtensions(storageScheduler.storageStyle.GRID);
+    wallScheduler.run();
 }

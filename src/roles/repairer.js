@@ -1,4 +1,4 @@
-﻿const roleRepairer = {
+﻿const repairer = {
 
     /** @param {Creep} creep **/
     run: function (creep) {
@@ -16,4 +16,4 @@
     }
 };
 
-module.exports = roleRepairer;
+module.exports = repairer;
